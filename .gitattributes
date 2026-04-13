@@ -1,0 +1,39 @@
+# Автоматична нормалізація закінчень рядків (Git сам вирішує на основі ОС)
+* text=auto
+
+# Специфікації для Frontend (React/Node.js)
+# Жорстко встановлюємо LF (Line Feed). 
+# CRLF у цих файлах призводить до критичних помилок у Prettier, ESLint та під час збірки в CI/CD (Linux).
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+.prettierrc text eol=lf
+.eslintrc text eol=lf
+
+# Специфікації для Backend (.NET/C#)
+# Файли рішень (sln) та проектів (csproj) традиційно використовують CRLF для сумісності з Visual Studio.
+*.sln text eol=crlf
+*.csproj text eol=crlf
+*.cs text diff=csharp
+
+# Скрипти
+# bash-скрипти не працюватимуть у Linux/Docker, якщо матимуть закінчення CRLF.
+*.sh text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Бінарні файли (виключаються з нормалізації та текстового diff)
+*.dll binary
+*.exe binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text eol=lf
