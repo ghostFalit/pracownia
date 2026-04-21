@@ -1,0 +1,23 @@
+import { apiClient } from './axiosConfig';
+import type { ProductDto, CreateProductDto, UpdateProductDto } from '../types/product';
+
+export const productApi = {
+    getAll: async (): Promise<ProductDto[]> => {
+        const response = await apiClient.get<ProductDto[]>('/products');
+        return response.data;
+    },
+    getById: async (id: number): Promise<ProductDto> => {
+        const response = await apiClient.get<ProductDto>(`/products/${id}`);
+        return response.data;
+    },
+    create: async (data: CreateProductDto): Promise<ProductDto> => {
+        const response = await apiClient.post<ProductDto>('/products', data);
+        return response.data;
+    },
+    update: async (id: number, data: UpdateProductDto): Promise<void> => {
+        await apiClient.put(`/products/${id}`, data);
+    },
+    delete: async (id: number): Promise<void> => {
+        await apiClient.delete(`/products/${id}`);
+    }
+};
