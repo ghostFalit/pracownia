@@ -1,7 +1,7 @@
 import { apiClient } from './axiosConfig';
 import type { ProductDto, CreateProductDto, UpdateProductDto } from '../types/product';
 
-export const productApi = {
+export const productServiceApi = {
     getAll: async (): Promise<ProductDto[]> => {
         const response = await apiClient.get<ProductDto[]>('/products');
         return response.data;
