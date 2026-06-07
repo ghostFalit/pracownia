@@ -17,12 +17,6 @@ public class ProductService : IProductService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ProductDto>> GetAllAsync()
-    {
-        var products = await _context.Products.AsNoTracking().ToListAsync();
-        return _mapper.Map<IEnumerable<ProductDto>>(products);
-    }
-
     public async Task<ProductDto?> GetByIdAsync(int id)
     {
         var product = await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
@@ -53,5 +47,27 @@ public class ProductService : IProductService
 
         _context.Products.Remove(product);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<PagedResponse<ProductDto>> GetPagedAsync(string? searchTerm, int pageNumber, int pageSize)
+    {
+        var query = _context.Products.AsNoTracking().AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            query = query.Where(p => p.Title.Contains(searchTerm));
+        }
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(p => p.CreationDate)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        var dtoItems = _mapper.Map<IEnumerable<ProductDto>>(items);
+
+        return new PagedResponse<ProductDto>(dtoItems, totalCount, pageNumber, pageSize);
     }
 }

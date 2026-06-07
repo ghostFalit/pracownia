@@ -16,10 +16,13 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll()
+    public async Task<ActionResult<PagedResponse<ProductDto>>> GetPaged(
+        [FromQuery] string? searchTerm = null,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
     {
-        var products = await _productService.GetAllAsync();
-        return Ok(products);
+        var pagedProducts = await _productService.GetPagedAsync(searchTerm, pageNumber, pageSize);
+        return Ok(pagedProducts);
     }
 
     [HttpGet("{id}")]
