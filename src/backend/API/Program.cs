@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(cfg => { }, typeof(Application.Mappings.MappingProfile));
 builder.Services.AddScoped<ICommentService, CommentService>();
 
 var app = builder.Build();

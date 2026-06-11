@@ -1,9 +1,12 @@
 import { apiClient } from './axiosConfig';
 import type { ProductDto, CreateProductDto, UpdateProductDto } from '../types/product';
+import type { PagedResponse } from '../types/pagination';
 
 export const productServiceApi = {
-    getAll: async (): Promise<ProductDto[]> => {
-        const response = await apiClient.get<ProductDto[]>('/products');
+    getPaged: async (searchTerm: string = '', pageNumber: number = 1, pageSize: number = 10): Promise<PagedResponse<ProductDto>> => {
+        const response = await apiClient.get<PagedResponse<ProductDto>>('/products', {
+            params: { searchTerm, pageNumber, pageSize }
+        });
         return response.data;
     },
     getById: async (id: number): Promise<ProductDto> => {
